@@ -1,0 +1,15 @@
+.heroDiv {
+    height: calc(80vh - 5rem);
+}
+
+
+.cardDiv {
+    width: 25%;
+}
+
+@media screen and (max-width: 786px) {
+    .cardDiv {
+        width: 80%;
+       
+    }
+}

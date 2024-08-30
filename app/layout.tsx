@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,15 +18,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className} bg-gray-900`}>
+        <body className={`${inter.className} bg-gradient-to-br from-gray-900 to-gray-800`}>
           <div>
-         
           </div>
           {children}
         </body>
       </html>
     </ClerkProvider>
-    
-    
   );
 }
