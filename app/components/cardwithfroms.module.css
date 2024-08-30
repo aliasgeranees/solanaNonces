@@ -1,0 +1,10 @@
+.inputSol {
+    width: 7rem;
+}
+
+
+@media screen and (max-width: 492px) {
+    .inputSol {
+        width: 12rem;
+    }
+}

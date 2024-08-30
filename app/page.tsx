@@ -68,7 +68,7 @@ export default async function Home() {
                 </p>
                 </div>
 
-                <Button className={`bg-gray-700   text-gray-400 w-2/5`} variant="ghost"> 
+                <Button className={`bg-gray-700 text-gray-400 w-2/5`} variant="ghost"> 
                   <SignUpButton mode="modal">
                   </SignUpButton>
                 </Button>
@@ -79,6 +79,9 @@ export default async function Home() {
         </div>
 
       </div>
+
+      <p className={`${styles.textSchedule} text-gray-200 text-center`}>Please Note :- In order for the cron job to work your website should be kept running till the scheduled time as aws lambda or dockers are not used</p>
+      <p className={`${styles.textSchedule} text-gray-200 text-center`}  > For now i have only used devnet connection as was not able to test on main net</p>
     </main>
 
   );

@@ -40,14 +40,19 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
+import styles from "./cardwithfroms.module.css"
+
+import { nonceSubmission } from "@/lib/nonceSubmission"
+
 const formSchema = z.object({
   publickey: z.string().min(2).max(100),
   privatekey: z.string().min(2).max(100),
   date: z.date({
-    required_error: "A date of birth is required error."
+    required_error: "A date is required."
   }),
   timeHours: z.coerce.number(),
   timeMinutes: z.coerce.number(),
+  solana: z.coerce.number(),
   recieverPublickey: z.string()
 })
 
@@ -64,6 +69,12 @@ export function CardWithForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // pass all the data to a server component which will have a set inteval and then execute the transactions
     console.log(values);
+
+    console.log(values.date.getDate());
+    console.log(values.date.getMonth());
+    console.log(values.timeHours);
+
+    const submission = nonceSubmission(values);
   }
 
   return (
@@ -133,9 +144,9 @@ export function CardWithForm() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date() 
-                        }
+                        // disabled={(date) =>
+                        //   date < new Date() && date != new Date()
+                        // }
                         initialFocus
                       />
                     </PopoverContent>
@@ -148,7 +159,7 @@ export function CardWithForm() {
             <FormDescription className="mt-1">
               Enter time in 24 hours format.
             </FormDescription>
-            <div className="flex flex-row align-start justify-start">
+            <div className="flex flex-row align-start justify-start flex-wrap">
               <FormField
                 control={form.control}
                 name="timeHours"
@@ -169,13 +180,30 @@ export function CardWithForm() {
                   <FormItem>
                     <FormLabel>Minutes</FormLabel>
                     <FormControl>
-                      <Input className="text-zinc-950 w-20 ml-2" placeholder="00" {...field} />
+                      <Input className="text-zinc-950 w-20 ml-2 mr-2" placeholder="00" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="solana"
+                render={({ field }) => (
+                  <FormItem className={`${styles.inputSolCard}`}>
+                    <FormLabel>Sols</FormLabel>
+                    <FormControl>
+                      <Input className={`${styles.inputSol} text-zinc-950 w-24`} placeholder="0.00.." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
             </div>
+
+
 
             <FormField
               control={form.control}
@@ -193,8 +221,8 @@ export function CardWithForm() {
             <Button className="mt-5" type="submit"> Schedule </Button>
           </CardContent>
 
-            
-            
+
+
           {/* <CardFooter className="flex flex-row justify-between align-between text-gray-950"> */}
           {/* </CardFooter> */}
         </form>
