@@ -150,7 +150,7 @@ async function createNonceAccount(
     const day = data.date.getDate();
     const month = (data.date.getMonth()+1);
 
-    const combinedDate = new Date(data.date.getFullYear(), data.date.getMonth(), data.date.getDate()+1, hours , mins );
+    const combinedDate = new Date(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), hours , mins );
     const newCombinedDate = new Date(combinedDate)
     let currentTime = new Date(Date.now()+(5*3600+30*60)*1000);
 
