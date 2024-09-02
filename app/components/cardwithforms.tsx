@@ -88,7 +88,7 @@ export function CardWithForm() {
 
     const submission = await nonceSubmission(values);
 
-    console.log("submission is returned");
+    console.log("submission is returned" , submission);
   }
 
   return (

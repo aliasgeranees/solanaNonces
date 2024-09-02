@@ -154,6 +154,7 @@ async function createNonceAccount(
         "Transaction Signature:",
         `https://explorer.solana.com/tx/${sig}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`,
       );
+
       task.stop();
     }
 
