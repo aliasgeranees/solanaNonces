@@ -12,8 +12,6 @@ import {
     Transaction,
 } from '@solana/web3.js';
 
-import { toZonedTime, format } from 'date-fns-tz';
-
 import base58 from 'bs58';
 
 // import cron from 'node-cron';
@@ -147,23 +145,17 @@ async function createNonceAccount(
     //   skipPreflight: true,
     // });
   
-    // const hours = data.timeHours;
-    // const mins = data.timeMinutes
-    // const day = data.date.getDate();
-    // const month = (data.date.getMonth()+1);
+    const hours = data.timeHours;
+    const mins = data.timeMinutes
+    const day = data.date.getDate();
+    const month = (data.date.getMonth()+1);
 
     const combinedDate = new Date(data.date.getFullYear(), data.date.getMonth() , data.date.getDate() , data.timeHours , data.timeMinutes);
 
-    let utcDate = new Date(Date.now());
-
-    const istDate = toZonedTime(utcDate, 'Asia/Kolkata');
-
-    const formatedIstTime = format(istDate, 'yyyy-MM-dd HH:mm:ssXXX', { timeZone: 'Asia/Kolkata' });
-
-    const currentTime  = new Date(formatedIstTime);
+    let currentTime = new Date(Date.now()+(5*3600+30*60)*1000);
 
     let remainingTime = combinedDate.getTime() - currentTime.getTime();
-    
+
     console.log("current Date is " , currentTime )
     console.log("combined date is ", combinedDate)
 
