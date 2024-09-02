@@ -12,6 +12,8 @@ import {
     Transaction,
 } from '@solana/web3.js';
 
+import { toZonedTime, format } from 'date-fns-tz';
+
 import base58 from 'bs58';
 
 // import cron from 'node-cron';
@@ -152,9 +154,16 @@ async function createNonceAccount(
 
     const combinedDate = new Date(data.date.getFullYear(), data.date.getMonth() , data.date.getDate() , data.timeHours , data.timeMinutes);
 
-    let currentTime = new Date(Date.now());
+    let utcDate = new Date(Date.now());
+
+    const istDate = toZonedTime(utcDate, 'Asia/Kolkata');
+
+    const formatedIstTime = format(istDate, 'yyyy-MM-dd HH:mm:ssXXX', { timeZone: 'Asia/Kolkata' });
+
+    const currentTime  = new Date(formatedIstTime);
 
     let remainingTime = combinedDate.getTime() - currentTime.getTime();
+    
     console.log("current Date is " , currentTime )
     console.log("combined date is ", combinedDate)
 
@@ -186,3 +195,5 @@ async function createNonceAccount(
     // min hour day month 
     // const task = cron.schedule(`${mins} ${hours} ${day} ${month} *`, scheduleTransactionWithCorn);
   }
+
+
