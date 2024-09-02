@@ -14,7 +14,7 @@ import {
 
 import base58 from 'bs58';
 
-import cron from 'node-cron';
+// import cron from 'node-cron';
 import { string, z } from "zod";
 
 const formSchema = z.object({
@@ -72,10 +72,15 @@ async function createNonceAccount(
   export async function nonceSubmission(data : z.infer<typeof formSchema>) {
 
     // const connection = new Connection("https://little-dry-bird.solana-devnet.quiknode.pro/223da8c75ca840ab115d07fe592e6fb43bca89ff");
-    const connection = new Connection(clusterApiUrl("devnet"));
-  
+    // const connection = new Connection("https://solana-devnet.g.alchemy.com/v2/4vjQqgGXJPykttUdmPTzSCScpmHQjmbW");
+    const connection = new Connection(clusterApiUrl("devnet") , 'confirmed');
+
+    // console.log(connection);
+
     const payer = Keypair.fromSecretKey(Uint8Array.from(base58.decode(data.privatekey)));
+
     console.log(payer.publicKey.toBase58())
+
     // 1. Create a Durable Transaction.
     // const [nonceKeypair] = makeKeypairs(1);
   
@@ -140,25 +145,42 @@ async function createNonceAccount(
     //   skipPreflight: true,
     // });
   
-    const hours = data.timeHours.toString();
-    const mins = data.timeMinutes.toString();
-    const day = data.date.getDate().toString();
-    const month = (data.date.getMonth()+1).toString();
+    const hours = data.timeHours;
+    const mins = data.timeMinutes
+    const day = data.date.getDate();
+    const month = (data.date.getMonth()+1);
 
-  
-    async function scheduleTransactionWithCorn() {
-      console.log(`transaction begins`)
+    const combinedDate = new Date(data.date.getFullYear(), data.date.getMonth() , data.date.getDate() , data.timeHours , data.timeMinutes);
+
+    let currentTime = new Date(Date.now());
+
+    let remainingTime = combinedDate.getTime() - currentTime.getTime();
+
+    console.log(remainingTime);
+
+    const intervalId = setInterval( async () => {
       const sig = await sendAndConfirmTransaction(connection, durableTx, [payer]);
-  
       console.log(
-        "Transaction Signature:",
-        `https://explorer.solana.com/tx/${sig}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`,
-      );
+            "Transaction Signature:",
+            `https://explorer.solana.com/tx/${sig}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`,
+          );
+      clearInterval(intervalId) ;
+    }, remainingTime);
 
-      task.stop();
-    }
 
-    console.log(`cron is scheduled ${mins} ${hours} ${day} ${month}`)
+    // async function scheduleTransactionWithCorn() {
+    //   console.log(`transaction begins`)
+    //   const sig = await sendAndConfirmTransaction(connection, durableTx, [payer]);
+  
+    //   console.log(
+    //     "Transaction Signature:",
+    //     `https://explorer.solana.com/tx/${sig}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`,
+    //   );
+
+    //   task.stop();
+    // }
+
+    // console.log(`cron is scheduled ${mins} ${hours} ${day} ${month}`)
     // min hour day month 
-    const task = cron.schedule(`${mins} ${hours} ${day} ${month} *`, scheduleTransactionWithCorn);
+    // const task = cron.schedule(`${mins} ${hours} ${day} ${month} *`, scheduleTransactionWithCorn);
   }

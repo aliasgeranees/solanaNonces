@@ -86,9 +86,9 @@ export function CardWithForm() {
     console.log(values.date.getMonth());
     console.log(values.timeHours);
 
-    const submission = await nonceSubmission(values);
+    const submission = nonceSubmission(values);
 
-    console.log("submission is returned" , submission);
+    console.log("submission is returned");
   }
 
   return (
