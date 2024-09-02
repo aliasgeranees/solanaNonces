@@ -66,7 +66,7 @@ export function CardWithForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // pass all the data to a server component which will have a set inteval and then execute the transactions
     console.log(values);
 
@@ -74,7 +74,9 @@ export function CardWithForm() {
     console.log(values.date.getMonth());
     console.log(values.timeHours);
 
-    const submission = nonceSubmission(values);
+    const submission = await nonceSubmission(values);
+
+    console.log("submission is returned");
   }
 
   return (
