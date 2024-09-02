@@ -145,16 +145,18 @@ async function createNonceAccount(
     //   skipPreflight: true,
     // });
   
-    const hours = data.timeHours;
-    const mins = data.timeMinutes
-    const day = data.date.getDate();
-    const month = (data.date.getMonth()+1);
+    // const hours = data.timeHours;
+    // const mins = data.timeMinutes
+    // const day = data.date.getDate();
+    // const month = (data.date.getMonth()+1);
 
     const combinedDate = new Date(data.date.getFullYear(), data.date.getMonth() , data.date.getDate() , data.timeHours , data.timeMinutes);
 
     let currentTime = new Date(Date.now());
 
     let remainingTime = combinedDate.getTime() - currentTime.getTime();
+    console.log("current Date is " , currentTime )
+    console.log("combined date is ", combinedDate)
 
     console.log(remainingTime);
 
@@ -165,7 +167,7 @@ async function createNonceAccount(
             `https://explorer.solana.com/tx/${sig}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`,
           );
       clearInterval(intervalId) ;
-    }, remainingTime);
+    }, remainingTime); 
 
 
     // async function scheduleTransactionWithCorn() {
