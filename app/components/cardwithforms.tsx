@@ -28,6 +28,17 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 import {
   Popover,
@@ -58,6 +69,7 @@ const formSchema = z.object({
 
 
 export function CardWithForm() {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -220,15 +232,29 @@ export function CardWithForm() {
                 </FormItem>
               )}
             />
-            <Button className="mt-5" type="submit"> Schedule </Button>
+
+            <AlertDialog>
+
+              <AlertDialogTrigger asChild>
+                <Button className="mt-5" type="submit"> Schedule </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Your transaction is scheduled please check after the scheduled time your account balance</AlertDialogTitle>
+
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogAction>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
           </CardContent>
-
-
 
           {/* <CardFooter className="flex flex-row justify-between align-between text-gray-950"> */}
           {/* </CardFooter> */}
         </form>
       </Form>
-    </Card>
+    </Card >
   )
 }
